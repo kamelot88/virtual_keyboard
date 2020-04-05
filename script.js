@@ -273,8 +273,8 @@ var keyboardArry = [
     {
         keyRu: 'ф',
         keyRuShift: 'Ф',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'a',
+        keyEnShift: 'A',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -282,8 +282,8 @@ var keyboardArry = [
     {
         keyRu: 'ы',
         keyRuShift: 'Ы',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 's',
+        keyEnShift: 'S',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -291,8 +291,8 @@ var keyboardArry = [
     {
         keyRu: 'в',
         keyRuShift: 'В',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'd',
+        keyEnShift: 'D',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -300,8 +300,8 @@ var keyboardArry = [
     {
         keyRu: 'а',
         keyRuShift: 'А',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'f',
+        keyEnShift: 'F',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -309,8 +309,8 @@ var keyboardArry = [
     {
         keyRu: 'п',
         keyRuShift: 'П',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'g',
+        keyEnShift: 'G',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -318,8 +318,8 @@ var keyboardArry = [
     {
         keyRu: 'р',
         keyRuShift: 'Р',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'h',
+        keyEnShift: 'H',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -327,8 +327,8 @@ var keyboardArry = [
     {
         keyRu: 'о',
         keyRuShift: 'О',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'j',
+        keyEnShift: 'J',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -336,8 +336,8 @@ var keyboardArry = [
     {
         keyRu: 'л',
         keyRuShift: 'Л',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'k',
+        keyEnShift: 'K',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -345,8 +345,8 @@ var keyboardArry = [
     {
         keyRu: 'д',
         keyRuShift: 'Д',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: 'l',
+        keyEnShift: 'L',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -354,8 +354,8 @@ var keyboardArry = [
     {
         keyRu: 'ж',
         keyRuShift: 'Ж',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: ';',
+        keyEnShift: ':',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -363,8 +363,8 @@ var keyboardArry = [
     {
         keyRu: 'э',
         keyRuShift: 'Э',
-        keyEn: '',
-        keyEnShift: '',
+        keyEn: '\'',
+        keyEnShift: '"',
         elementClass: 'key-standart',
         keyCode: '',
         pressing: false
@@ -523,10 +523,10 @@ var keyboardArry = [
         pressing: false
     },
     {
-        keyRu: '',
-        keyRuShift: '',
-        keyEn: '',
-        keyEnShift: '',
+        keyRu: ' ',
+        keyRuShift: ' ',
+        keyEn: ' ',
+        keyEnShift: ' ',
         elementClass: 'key-space',
         keyCode: '',
         pressing: false
@@ -592,7 +592,7 @@ textOs.classList.add('text-os');
 textOs.textContent = 'Клавиатура создана в операционной системе Linux';
 var textLang = document.createElement('p');
 textLang.classList.add('text-lang');
-textLang.textContent = 'Комбинация для переключения языка: Win + Space';
+textLang.textContent = 'Комбинация для переключения языка: Ctrl + Shift';
 body.appendChild(main);
 main.appendChild(title);
 main.appendChild(displayKey);
@@ -600,34 +600,30 @@ main.appendChild(keyboard);
 main.appendChild(textOs);
 main.appendChild(textLang);
 
-// Создаю функцию для создания элементов клавиатуры
+// Индикатор раскладки клавиатуры
+var indicationLangText = document.createElement('div');
+indicationLangText.classList.add('indication-lang-text');
+indicationLangText.textContent = 'Текущий язык клавиатуры -  ';
+main.appendChild(indicationLangText);
+var indicationLang = document.createElement('div');
+indicationLang.classList.add('indication-lang');
+indicationLang.textContent = 'RU';
+indicationLangText.appendChild(indicationLang);
 
-/* var createKey = function (elemClass, _textKey) {
-    var elementsKeyboard = document.createElement('div');
-    elementsKeyboard.classList.add('key');
-    elementsKeyboard.classList.add(elemClass);
-    elementsKeyboard.textContent = _textKey;
-    return elementsKeyboard;
+document.onkeydown = function (e) {
+    e = e || window.event;
+    if (e.shiftKey && e.keyCode == 17) {
+        indicationLang.classList.toggle('indication-lang-EN');
+        if (indicationLang.textContent === 'RU') {
+            indicationLang.textContent = 'EN';
+        } else {
+            indicationLang.textContent = 'RU';
+        }
+    }
+    return true;
 }
 
-document.addEventListener('keydown', function (evt) {
-    var keyBoardElem = function (_keys) {
-        var text = _keys.keyRu;
-        // Проверяем, что нажат Shift
-        if (evt.shiftKey) {
-            text = _keys.keyRuShift;
-        }
-        var keyElements = createKey(_keys.elementClass, text);
-        return keyElements;
-    }
-});
-
-
-for (var i = 0; i < keyboardArry.length; i++) {
-    var key = keyBoardElem(keyboardArry[i]);
-    keyboard.appendChild(key);
-} */
-
+// Создаю функции для создания элементов клавиатуры
 var createKey = function (elemClass, _textKey) {
     var elementsKeyboard = document.createElement('div');
     elementsKeyboard.classList.add('key');
@@ -635,26 +631,49 @@ var createKey = function (elemClass, _textKey) {
     elementsKeyboard.textContent = _textKey;
     return elementsKeyboard;
 }
+
 var keyBoardElem = function (_keys) {
-    var text = _keys.keyRu;
-    if (document.shiftKey) {
-        text = _keys.keyRuShift;
+    var keyText = _keys.keyRu;
+    if (indicationLang.classList.contains('indication-lang-EN')) {
+        keyText = _keys.keyEn;
     }
-    createKey(_keys.elementClass, text);
-    var keyElements = createKey(_keys.elementClass, text);
+    var keyElements = createKey(_keys.elementClass, keyText);
     return keyElements;
 }
-
 
 for (var i = 0; i < keyboardArry.length; i++) {
     var key = keyBoardElem(keyboardArry[i]);
     keyboard.appendChild(key);
 }
 
+// Добавляю анимацию при клике на клавиши клавиатуры и вывод символов на экран
+var keyElems = document.querySelectorAll('.key');
+var textarea = document.querySelector('textarea');
+for (let keyElem of keyElems) {
+    keyElem.onclick = function () {
+        keyElem.classList.add('key-transform');
+        if (keyElem.textContent === 'Backspace') {
+            textarea.textContent = textarea.value.substring(0, textarea.value.length - 1);
+        }
+        if (keyElem.classList.contains('key-standart') || keyElem.classList.contains('key-space')) {
+            textarea.textContent += keyElem.textContent;
+        }
 
+        // функция задержки удаления класса трансформации клавиши
+        function removeTransform() {
+            keyElem.classList.remove('key-transform');
+        }
+        setTimeout(removeTransform, 150);
+    };
+};
 
-
-
-
-
-// keyboardArry
+//var keyText = function (_keys) {
+    //     var text = _keys.keyRu;
+    //     document.addEventListener('keydown', function (evt) {
+    //         // Проверяем, что код клавиши равен 8
+    //         if (evt.keyCode === 8) {
+    //             text = _keys.keyRuShift;
+    //         }
+    //     });
+    //     return text;
+    // }
